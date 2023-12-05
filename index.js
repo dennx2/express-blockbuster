@@ -1,9 +1,36 @@
-const Joi = require('joi');
-const express = require('express');
 require('dotenv').config();
+const startupDebugger = require('debug')('app:startup');
+const dbDebugger = require('debug')('app:db');
+const configDebugger = require('debug')('app:config');
+
+const config = require('config');
+const morgan = require('morgan');
+const helmet = require('helmet');
+const Joi = require('joi');
+const logger = require('./middleware/logger');
+const express = require('express');
 const app = express();
 
+app.set('view engine', 'pug');
+app.set('views', './views'); // default
+
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(logger);
+app.use(express.static('public'));
+app.use(helmet());
+
+// Configuration
+configDebugger('Application Name: ' + config.get('name'));
+configDebugger('Mail Server: ' + config.get('mail.host'));
+
+if (app.get('env') === 'development') {
+  app.use(morgan('tiny'));
+  startupDebugger('Morgan enabled...');
+}
+
+// Db work...
+dbDebugger('Connected to the database...');
 
 const genres = [
   { id: 1, name: 'Action' },
@@ -57,7 +84,6 @@ app.get('/api/genres/:id', (req, res) => {
 
   res.send(genre);
 });
-
 
 const validateGenre = genre => {
   const schema = Joi.object({
