@@ -23,7 +23,7 @@ router.post('/', async (req, res) => {
   if (movie.numberInStock === 0)
     return res.status(400).send('Movie not in stock.');
 
-  let rental = new Rental({
+  const rental = new Rental({
     customer: {
       _id: customer._id,
       name: customer.name,
@@ -40,7 +40,7 @@ router.post('/', async (req, res) => {
   try {
     await session.withTransaction(async () => {
       await movie.updateOne({ $inc: { numberInStock: -1 } }, { session });
-      rental = await rental.save({ session });
+      await rental.save({ session });
     });
 
     res.send(rental);
