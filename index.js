@@ -1,5 +1,5 @@
 require('dotenv').config();
-const config = require('config');
+
 
 require('express-async-errors');
 
@@ -10,11 +10,9 @@ const app = express();
 
 require('./startup/routes')(app);
 require('./startup/db')();
+require('./startup/config')();
 
-if (!config.get('jwtPrivateKey')) {
-  console.error('FATAL ERRPR: jwtPrivateKey is not defined.');
-  process.exit(1);
-}
+
 
 
 
