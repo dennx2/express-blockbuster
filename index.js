@@ -7,11 +7,12 @@ const genres = require('./routes/genres');
 const customers = require('./routes/customers');
 const movies = require('./routes/movies');
 const rentals = require('./routes/rentals');
+const users = require('./routes/users');
 const express = require('express');
 const app = express();
 
 // Run the server
-// mongod --dbpath="d:\data\db" --replSet rs0
+// mongod --dbpath="d:\data\db1" --replSet rs0
 // Connect with Client
 // mongosh mongodb://127.0.0.1:27017?replicaSet=rs0
 
@@ -28,6 +29,7 @@ app.use('/api/genres', genres);
 app.use('/api/customers', customers);
 app.use('/api/movies', movies);
 app.use('/api/rentals', rentals);
+app.use('/api/users', users);
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Server is running on port ${port}...`));
