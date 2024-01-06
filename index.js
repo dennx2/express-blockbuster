@@ -1,6 +1,7 @@
 require('dotenv').config();
 const config = require('config');
 
+require('express-async-errors');
 const mongoose = require('mongoose');
 const Joi = require('joi');
 Joi.objectId = require('joi-objectid')(Joi);
