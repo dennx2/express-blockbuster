@@ -2,6 +2,7 @@ require('dotenv').config();
 const config = require('config');
 
 require('express-async-errors');
+const winston = require('winston');
 const mongoose = require('mongoose');
 const Joi = require('joi');
 Joi.objectId = require('joi-objectid')(Joi);
@@ -14,6 +15,8 @@ const auth = require('./routes/auth');
 const error = require('./middleware/error');
 const express = require('express');
 const app = express();
+
+winston.add(new winston.transports.File({ filename: 'combined.log' }));
 
 if (!config.get('jwtPrivateKey')) {
   console.error('FATAL ERRPR: jwtPrivateKey is not defined.');
