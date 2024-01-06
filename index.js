@@ -1,4 +1,5 @@
 require('dotenv').config();
+const config = require('config');
 
 const mongoose = require('mongoose');
 const Joi = require('joi');
@@ -11,6 +12,11 @@ const users = require('./routes/users');
 const auth = require('./routes/auth');
 const express = require('express');
 const app = express();
+
+if (!config.get('jwtPrivateKey')) {
+  console.error('FATAL ERRPR: jwtPrivateKey is not defined.');
+  process.exit(1);
+}
 
 // Run the server
 // mongod --dbpath="d:\data\db1" --replSet rs0
