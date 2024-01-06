@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const logger = require('../utils/logger');
+const config = require('config');
 
 module.exports = function () {
   // Run the server
@@ -7,10 +8,11 @@ module.exports = function () {
   // Connect with Client
   // mongosh mongodb://127.0.0.1:27017?replicaSet=rs0
 
+  const db = config.get('db');
   mongoose
     .connect(
-      'mongodb://127.0.0.1:27017/streaming?replicaSet=rs0',
+      db,
       { family: 4 } // Force IPv4
     )
-    .then(() => logger.info('Connected to MongoDB...'));
+    .then(() => logger.info(`Connected to ${db}...`));
 };
