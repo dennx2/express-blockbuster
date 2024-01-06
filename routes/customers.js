@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { Customer, validate } = require('../models/customer');
 const auth = require('../middleware/auth');
+const admin = require('../middleware/admin');
 
 router.get('/', async (req, res) => {
   const customers = await Customer.find().sort('name');
@@ -39,7 +40,7 @@ router.put('/:id', auth, async (req, res) => {
   res.send(customer);
 });
 
-router.delete('/:id', auth, async (req, res) => {
+router.delete('/:id', [auth, admin], async (req, res) => {
   const customer = await Customer.findByIdAndDelete(req.params.id);
 
   if (!customer)
